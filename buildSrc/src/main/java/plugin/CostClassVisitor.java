@@ -1,12 +1,13 @@
 package plugin;
 
-import me.wangyuwei.costtime.Cost;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.AdviceAdapter;
+
+import me.wangyuwei.costtime.Cost;
 
 /**
  * 巴掌
@@ -15,63 +16,50 @@ import org.objectweb.asm.commons.AdviceAdapter;
 
 public class CostClassVisitor extends ClassVisitor {
 
-  public CostClassVisitor(ClassVisitor classVisitor) {
-    super(Opcodes.ASM5, classVisitor);
-  }
+    boolean enable, costAll;
 
-  @Override
-  public MethodVisitor visitMethod(int access, String name, String desc, String signature,
-      String[] exceptions) {
-    MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
-    mv = new AdviceAdapter(Opcodes.ASM5, mv, access, name, desc) {
+    public CostClassVisitor(ClassVisitor classVisitor, boolean enable, boolean costAll) {
+        super(Opcodes.ASM5, classVisitor);
+        this.enable = enable;
+        this.costAll = costAll;
+    }
 
-      private boolean inject = false;
+    @Override
+    public MethodVisitor visitMethod(int access, String name, String desc, String signature,
+                                     String[] exceptions) {
+        MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
+        mv = new AdviceAdapter(Opcodes.ASM5, mv, access, name, desc) {
 
-      @Override
-      public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-        if (Type.getDescriptor(Cost.class).equals(desc)) {
-          inject = true;
-        }
-        return super.visitAnnotation(desc, visible);
-      }
+            private boolean inject = false;
 
-      @Override
-      protected void onMethodEnter() {
-        if (inject) {
-          mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-          mv.visitLdcInsn("========start=========");
-          mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println",
-              "(Ljava/lang/String;)V", false);
+            @Override
+            public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+                if (Type.getDescriptor(Cost.class).equals(desc)) {
+                    inject = true;
+                }
+                return super.visitAnnotation(desc, visible);
+            }
 
-          mv.visitLdcInsn(name);
-          mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J", false);
-          mv.visitMethodInsn(INVOKESTATIC, "me/wangyuwei/costtime/TimeCache", "setStartTime",
-              "(Ljava/lang/String;J)V", false);
-        }
-      }
+            @Override
+            protected void onMethodEnter() {
+                if (isInject()) {
+                    mv.visitLdcInsn(name);
+                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "me/wangyuwei/costtime/TimePrint", "start", "(Ljava/lang/String;)V", false);
+                }
+            }
 
-      @Override
-      protected void onMethodExit(int opcode) {
-        if (inject) {
-          mv.visitLdcInsn(name);
-          mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J", false);
-          mv.visitMethodInsn(INVOKESTATIC, "me/wangyuwei/costtime/TimeCache", "setEndTime",
-              "(Ljava/lang/String;J)V", false);
+            private boolean isInject() {
+                return enable && (costAll || inject);
+            }
 
-          mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-          mv.visitLdcInsn(name);
-          mv.visitMethodInsn(INVOKESTATIC, "me/wangyuwei/costtime/TimeCache", "getCostTime",
-              "(Ljava/lang/String;)Ljava/lang/String;", false);
-          mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println",
-              "(Ljava/lang/String;)V", false);
-
-          mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-          mv.visitLdcInsn("========end=========");
-          mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println",
-              "(Ljava/lang/String;)V", false);
-        }
-      }
-    };
-    return mv;
-  }
+            @Override
+            protected void onMethodExit(int opcode) {
+                if (isInject()) {
+                    mv.visitLdcInsn(name);
+                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "me/wangyuwei/costtime/TimePrint", "end", "(Ljava/lang/String;)V", false);
+                }
+            }
+        };
+        return mv;
+    }
 }
