@@ -9,12 +9,13 @@ import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.ClassWriter
 import plugin.CostClassVisitor
+import plugin.CostTime
 
 import static org.objectweb.asm.ClassReader.EXPAND_FRAMES
 
 public class CostTimePlugin extends Transform implements Plugin<Project> {
   @Override public void apply(Project project) {
-
+project.extensions.create("costtime", CostTime)
     def android = project.extensions.getByType(AppExtension)
     android.registerTransform(this)
   }
