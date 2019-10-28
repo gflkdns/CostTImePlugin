@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.wangyuwei.costtimeplugin'
+apply plugin: 'costtime'
 
 
 costtime {
@@ -36,6 +36,6 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.2.0'
     testCompile 'junit:junit:4.12'
-//  compile 'me.wangyuwei:CostTime:1.0.1'
+//  compile 'me.wangyuwei:CostTimeConfig:1.0.1'
     compile project(':costtime')
 }

@@ -1,4 +1,4 @@
-package me.wangyuwei.costtime;
+package com.miqt.costtime;
 
 import android.os.SystemClock;
 import android.util.Log;

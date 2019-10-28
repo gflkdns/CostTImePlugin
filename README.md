@@ -302,10 +302,10 @@ CTRL+ALT+R->Right->E->Enter->Tab->enter your command line parameters->Enter.
 
 Transform API允许第三方插件在class文件转为为dex文件前操作编译好的class文件，那么这就是我们的入口，拿到正常的class后再经过ASM插入字节码后得到新的class，再被dx转成dex。
 
-首先自定义个plugin--**CostTimePlugin.groovy**：
+首先自定义个plugin--**com.miqt.plugin.CostTimePlugin.groovy**：
 
 ```groovy
-public class CostTimePlugin extends Transform implements Plugin<Project> {
+public class com.miqt.plugin.CostTimePlugin extends Transform implements Plugin<Project> {
   @Override public void apply(Project project) {
 
     def android = project.extensions.getByType(AppExtension)

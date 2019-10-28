@@ -1,11 +1,13 @@
-package wangyuwei.me.demo;
+package com.miqt.demo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import me.wangyuwei.costtime.Cost;
+import com.miqt.costtime.Cost;
+
+import wangyuwei.me.demo.R;
 
 public class MainActivity extends AppCompatActivity {
 

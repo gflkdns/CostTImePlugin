@@ -1,27 +1,23 @@
+package com.miqt.plugin
+
 import com.android.build.api.transform.*
-import com.android.build.gradle.AppExtension
 import com.android.build.gradle.internal.pipeline.TransformManager
+import com.miqt.costtime.CostClassVisitor
+import com.miqt.plugin.CostTimeConfig
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
-import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.ClassWriter
-import plugin.CostClassVisitor
-import plugin.CostTime
 
 import static org.objectweb.asm.ClassReader.EXPAND_FRAMES
 
-public class CostTimePlugin extends Transform implements Plugin<Project> {
-    Project project;
+public class CostTransform extends Transform {
+    Project project
 
-    @Override
-    public void apply(Project project) {
+    CostTransform(Project project) {
         this.project = project
-        project.extensions.create("costtime", CostTime)
-        def android = project.extensions.getByType(AppExtension)
-        android.registerTransform(this)
     }
 
     @Override
@@ -49,7 +45,7 @@ public class CostTimePlugin extends Transform implements Plugin<Project> {
                    Collection<TransformInput> referencedInputs, TransformOutputProvider outputProvider,
                    boolean isIncremental) throws IOException, TransformException, InterruptedException {
         println '//===============asm visit start===============//'
-        final CostTime costtimeconfig = project.costtime
+        final CostTimeConfig costtimeconfig = project.costtime
         println(costtimeconfig.toString())
         def startTime = System.currentTimeMillis()
 

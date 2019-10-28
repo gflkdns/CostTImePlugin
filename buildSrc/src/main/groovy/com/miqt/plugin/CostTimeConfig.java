@@ -1,6 +1,6 @@
-package plugin;
+package com.miqt.plugin;
 
-public class CostTime {
+public class CostTimeConfig {
     boolean enable = true;
     boolean costAll = false;
     int timeout = 10;

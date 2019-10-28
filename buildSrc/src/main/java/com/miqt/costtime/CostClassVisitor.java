@@ -1,4 +1,4 @@
-package plugin;
+package com.miqt.costtime;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
@@ -6,8 +6,6 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.AdviceAdapter;
-
-import me.wangyuwei.costtime.Cost;
 
 /**
  * 巴掌
@@ -44,7 +42,7 @@ public class CostClassVisitor extends ClassVisitor {
             protected void onMethodEnter() {
                 if (isInject()) {
                     mv.visitLdcInsn(name);
-                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "me/wangyuwei/costtime/TimePrint", "start", "(Ljava/lang/String;)V", false);
+                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/miqt/costtime/TimePrint", "start", "(Ljava/lang/String;)V", false);
                 }
             }
 
@@ -56,7 +54,7 @@ public class CostClassVisitor extends ClassVisitor {
             protected void onMethodExit(int opcode) {
                 if (isInject()) {
                     mv.visitLdcInsn(name);
-                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "me/wangyuwei/costtime/TimePrint", "end", "(Ljava/lang/String;)V", false);
+                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/miqt/costtime/TimePrint", "end", "(Ljava/lang/String;)V", false);
                 }
             }
         };

@@ -1,4 +1,4 @@
-package me.wangyuwei.costtime;
+package com.miqt.costtime;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;

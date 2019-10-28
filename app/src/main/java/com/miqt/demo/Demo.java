@@ -1,6 +1,6 @@
-package wangyuwei.me.demo;
+package com.miqt.demo;
 
-import me.wangyuwei.costtime.Cost;
+import com.miqt.costtime.Cost;
 
 /**
  * 巴掌

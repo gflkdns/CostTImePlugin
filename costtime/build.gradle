@@ -26,9 +26,9 @@ dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-def siteUrl = 'https://github.com/JeasonWong/CostTime'
-def gitUrl = 'https://github.com/JeasonWong/CostTime.git'
-def issueUrl = 'https://github.com/JeasonWong/CostTime/issues'
+def siteUrl = 'https://github.com/JeasonWong/CostTimeConfig'
+def gitUrl = 'https://github.com/JeasonWong/CostTimeConfig.git'
+def issueUrl = 'https://github.com/JeasonWong/CostTimeConfig/issues'
 group = "me.wangyuwei"
 
 install {
