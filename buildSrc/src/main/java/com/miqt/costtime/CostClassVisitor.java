@@ -7,10 +7,6 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.AdviceAdapter;
 
-/**
- * 巴掌
- * https://github.com/JeasonWong
- */
 
 public class CostClassVisitor extends ClassVisitor {
 
@@ -41,9 +37,22 @@ public class CostClassVisitor extends ClassVisitor {
             @Override
             protected void onMethodEnter() {
                 if (isInject()) {
-                    mv.visitLdcInsn(name);
+                    mv.visitLdcInsn(getName(name));
                     mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/miqt/costtime/TimePrint", "start", "(Ljava/lang/String;)V", false);
                 }
+            }
+
+            private String getName(String name) {
+                Type[] types = Type.getArgumentTypes(desc);
+                String type = "";
+                for (int i = 0; i < types.length; i++) {
+                    type = type.concat(types[i].getClassName());
+                    if (i != types.length - 1) {
+                        type = type.concat(",");
+                    }
+                }
+                name = name.concat("[").concat(type).concat("]");
+                return name;
             }
 
             private boolean isInject() {
@@ -53,7 +62,7 @@ public class CostClassVisitor extends ClassVisitor {
             @Override
             protected void onMethodExit(int opcode) {
                 if (isInject()) {
-                    mv.visitLdcInsn(name);
+                    mv.visitLdcInsn(getName(name));
                     mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/miqt/costtime/TimePrint", "end", "(Ljava/lang/String;)V", false);
                 }
             }
