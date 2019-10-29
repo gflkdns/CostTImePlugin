@@ -2,9 +2,7 @@ package com.miqt.plugin
 
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
-import com.miqt.costtime.CostClassVisitor
 import com.miqt.costtime.StringFogClassVisitor
-import com.miqt.plugin.CostTimeConfig
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
@@ -60,7 +58,7 @@ public class StringFogTransform extends Transform {
 
                             ClassReader cr = new ClassReader(file.bytes)
                             ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS)
-                            ClassVisitor cv = new StringFogClassVisitor("1231",cw)
+                            ClassVisitor cv = new StringFogClassVisitor("miqt", cw)
 
                             cr.accept(cv, EXPAND_FRAMES)
 

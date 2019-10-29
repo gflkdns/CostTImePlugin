@@ -11,6 +11,10 @@ import wangyuwei.me.demo.R;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static String hello1 = "hello";
+    public String hello2 = "hello";
+    public final String hello3 = "hello";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,8 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Cost
     public void show(View view) {
-        for (int i = 0; i < 100; i++) {
-            Log.v("----", i + "");
-        }
+        Log.v("tag", hello1 + hello2 + hello3);
     }
 }
