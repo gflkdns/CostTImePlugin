@@ -12,6 +12,7 @@ class CostTimePlugin implements Plugin<Project> {
         project.extensions.create("costtime", CostTimeConfig)
         def android = project.extensions.getByType(AppExtension)
         android.registerTransform(new CostTransform(project))
+        android.registerTransform(new StringFogTransform(project))
     }
 
 
